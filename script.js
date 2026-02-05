@@ -4,6 +4,7 @@ let currentSort = 'name';
 
 // DOM要素の取得
 const searchInput = document.getElementById('searchInput');
+const regionFilter = document.getElementById('regionFilter');
 const prefectureFilter = document.getElementById('prefectureFilter');
 const sortSelect = document.getElementById('sortSelect');
 const resetFiltersBtn = document.getElementById('resetFilters');
@@ -12,16 +13,60 @@ const resultsCount = document.getElementById('resultsCount');
 
 // 初期化
 document.addEventListener('DOMContentLoaded', () => {
+    initializePrefectureFilter();
     renderCourses(filteredCourses);
     setupEventListeners();
 });
 
+// 都道府県フィルターの初期化
+function initializePrefectureFilter() {
+    prefectureFilter.innerHTML = prefectures.map(pref => 
+        `<option value="${pref}">${pref}</option>`
+    ).join('');
+}
+
 // イベントリスナーの設定
 function setupEventListeners() {
     searchInput.addEventListener('input', handleSearch);
+    regionFilter.addEventListener('change', handleRegionFilter);
     prefectureFilter.addEventListener('change', handleFilter);
     sortSelect.addEventListener('change', handleSort);
     resetFiltersBtn.addEventListener('click', resetFilters);
+}
+
+// 地域フィルター処理
+function handleRegionFilter() {
+    const selectedRegion = regionFilter.value;
+    
+    // 地域に応じて都道府県フィルターを更新
+    if (selectedRegion === 'すべて') {
+        initializePrefectureFilter();
+    } else {
+        // 選択された地域の都道府県のみ表示
+        const regionPrefectures = getPrefecturesByRegion(selectedRegion);
+        prefectureFilter.innerHTML = '<option value="すべて">すべて</option>' + 
+            regionPrefectures.map(pref => 
+                `<option value="${pref}">${pref}</option>`
+            ).join('');
+        prefectureFilter.value = 'すべて';
+    }
+    
+    applyFilters(searchInput.value.toLowerCase().trim());
+}
+
+// 地域から都道府県リストを取得
+function getPrefecturesByRegion(region) {
+    const regionMap = {
+        '北海道': ['北海道'],
+        '東北': ['青森県', '岩手県', '宮城県', '秋田県', '山形県', '福島県'],
+        '関東': ['茨城県', '栃木県', '群馬県', '埼玉県', '千葉県', '東京都', '神奈川県'],
+        '中部': ['新潟県', '富山県', '石川県', '福井県', '山梨県', '長野県', '岐阜県', '静岡県', '愛知県'],
+        '関西': ['三重県', '滋賀県', '京都府', '大阪府', '兵庫県', '奈良県', '和歌山県'],
+        '中国': ['鳥取県', '島根県', '岡山県', '広島県', '山口県'],
+        '四国': ['徳島県', '香川県', '愛媛県', '高知県'],
+        '九州': ['福岡県', '佐賀県', '長崎県', '熊本県', '大分県', '宮崎県', '鹿児島県', '沖縄県']
+    };
+    return regionMap[region] || [];
 }
 
 // 検索処理
@@ -44,9 +89,13 @@ function handleSort() {
 
 // フィルター適用
 function applyFilters(searchTerm) {
+    const selectedRegion = regionFilter.value;
     const selectedPrefecture = prefectureFilter.value;
     
     filteredCourses = golfCourses.filter(course => {
+        // 地域フィルター
+        const matchesRegion = selectedRegion === 'すべて' || course.region === selectedRegion;
+        
         // 都道府県フィルター
         const matchesPrefecture = selectedPrefecture === 'すべて' || course.prefecture === selectedPrefecture;
         
@@ -56,10 +105,11 @@ function applyFilters(searchTerm) {
             course.prefecture.toLowerCase().includes(searchTerm) ||
             course.city.toLowerCase().includes(searchTerm) ||
             course.address.toLowerCase().includes(searchTerm) ||
+            course.region.toLowerCase().includes(searchTerm) ||
             course.tags.some(tag => tag.toLowerCase().includes(searchTerm)) ||
             course.description.toLowerCase().includes(searchTerm);
         
-        return matchesPrefecture && matchesSearch;
+        return matchesRegion && matchesPrefecture && matchesSearch;
     });
     
     sortCourses();
@@ -91,6 +141,15 @@ function sortCourses() {
             break;
         case 'prefecture':
             filteredCourses.sort((a, b) => {
+                const prefectureCompare = a.prefecture.localeCompare(b.prefecture, 'ja');
+                if (prefectureCompare !== 0) return prefectureCompare;
+                return a.name.localeCompare(b.name, 'ja');
+            });
+            break;
+        case 'region':
+            filteredCourses.sort((a, b) => {
+                const regionCompare = a.region.localeCompare(b.region, 'ja');
+                if (regionCompare !== 0) return regionCompare;
                 const prefectureCompare = a.prefecture.localeCompare(b.prefecture, 'ja');
                 if (prefectureCompare !== 0) return prefectureCompare;
                 return a.name.localeCompare(b.name, 'ja');
@@ -140,7 +199,6 @@ function createCourseCard(course) {
                 <div class="course-header">
                     <h2 class="course-name">${course.name}</h2>
                     <div class="course-location">
-                        <span>📍</span>
                         <span>${course.prefecture} ${course.city}</span>
                     </div>
                 </div>
@@ -179,11 +237,12 @@ function createCourseCard(course) {
 // フィルターリセット
 function resetFilters() {
     searchInput.value = '';
+    regionFilter.value = 'すべて';
     prefectureFilter.value = 'すべて';
     sortSelect.value = 'name';
     currentSort = 'name';
+    initializePrefectureFilter();
     filteredCourses = [...golfCourses];
     sortCourses();
     renderCourses(filteredCourses);
 }
-
