@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ジュニアゴルフ場ポータル - 関東エリア</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <header class="header">
+        <div class="container">
+            <h1 class="logo">ジュニアゴルフ場ポータル</h1>
+            <p class="subtitle">関東エリアのジュニア料金対応ゴルフ場を探す</p>
+        </div>
+    </header>
+
+    <main class="main">
+        <div class="container">
+            <!-- 検索・フィルターセクション -->
+            <section class="filters">
+                <div class="search-box">
+                    <input type="text" id="searchInput" class="search-input" placeholder="ゴルフ場名、地域、タグで検索...">
+                    <button class="search-button" aria-label="検索">
+                        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <circle cx="11" cy="11" r="8"></circle>
+                            <path d="m21 21-4.35-4.35"></path>
+                        </svg>
+                    </button>
+                </div>
+
+                <div class="filter-row">
+                    <div class="filter-group">
+                        <label for="prefectureFilter" class="filter-label">都道府県</label>
+                        <select id="prefectureFilter" class="filter-select">
+                            <option value="すべて">すべて</option>
+                            <option value="東京都">東京都</option>
+                            <option value="神奈川県">神奈川県</option>
+                            <option value="埼玉県">埼玉県</option>
+                            <option value="千葉県">千葉県</option>
+                            <option value="茨城県">茨城県</option>
+                            <option value="栃木県">栃木県</option>
+                            <option value="群馬県">群馬県</option>
+                        </select>
+                    </div>
+
+                    <div class="filter-group">
+                        <label for="sortSelect" class="filter-label">並び替え</label>
+                        <select id="sortSelect" class="filter-select">
+                            <option value="name">名前順</option>
+                            <option value="price-low">ジュニア料金：安い順</option>
+                            <option value="price-high">ジュニア料金：高い順</option>
+                            <option value="rating">評価順</option>
+                            <option value="prefecture">都道府県順</option>
+                        </select>
+                    </div>
+
+                    <button id="resetFilters" class="reset-button">フィルターリセット</button>
+                </div>
+            </section>
+
+            <!-- 結果表示 -->
+            <section class="results">
+                <div class="results-header">
+                    <p class="results-count" id="resultsCount">0件のゴルフ場が見つかりました</p>
+                </div>
+                <div class="courses-grid" id="coursesGrid">
+                    <!-- ゴルフ場カードがここに動的に挿入されます -->
+                </div>
+            </section>
+        </div>
+    </main>
+
+    <footer class="footer">
+        <div class="container">
+            <p>&copy; 2024 ジュニアゴルフ場ポータル. All rights reserved.</p>
+        </div>
+    </footer>
+
+    <script src="golf-courses.js"></script>
+    <script src="script.js"></script>
+</body>
+</html>
+

@@ -1,0 +1,373 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ゴルフ場詳細 - ジュニアゴルフ場ポータル</title>
+    <link rel="stylesheet" href="styles.css">
+    <style>
+        .course-detail {
+            max-width: 1000px;
+            margin: 0 auto;
+        }
+
+        .back-link {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            color: var(--text-secondary);
+            text-decoration: none;
+            margin-bottom: 2rem;
+            font-size: 0.95rem;
+            transition: var(--transition);
+        }
+
+        .back-link:hover {
+            color: var(--primary-color);
+        }
+
+        .course-hero {
+            background: var(--bg-card);
+            border-radius: var(--radius-lg);
+            overflow: hidden;
+            box-shadow: var(--shadow-md);
+            margin-bottom: 2rem;
+        }
+
+        .course-hero-image {
+            width: 100%;
+            height: 400px;
+            object-fit: cover;
+            background: linear-gradient(135deg, #e8f5e9 0%, #c8e6c9 100%);
+        }
+
+        .course-hero-content {
+            padding: 2.5rem;
+        }
+
+        .course-title {
+            font-size: 2.5rem;
+            font-weight: 700;
+            color: var(--text-primary);
+            margin-bottom: 1rem;
+        }
+
+        .course-meta {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 2rem;
+            margin-bottom: 1.5rem;
+            padding-bottom: 1.5rem;
+            border-bottom: 2px solid var(--border-color);
+        }
+
+        .meta-item {
+            display: flex;
+            flex-direction: column;
+            gap: 0.25rem;
+        }
+
+        .meta-label {
+            font-size: 0.85rem;
+            color: var(--text-secondary);
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            font-weight: 600;
+        }
+
+        .meta-value {
+            font-size: 1.3rem;
+            font-weight: 700;
+            color: var(--primary-color);
+        }
+
+        .course-description-full {
+            font-size: 1.1rem;
+            line-height: 1.8;
+            color: var(--text-primary);
+            margin-bottom: 2rem;
+        }
+
+        .course-sections {
+            display: grid;
+            gap: 2rem;
+            margin-bottom: 2rem;
+        }
+
+        .section {
+            background: var(--bg-card);
+            padding: 2rem;
+            border-radius: var(--radius-lg);
+            box-shadow: var(--shadow-sm);
+        }
+
+        .section-title {
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: var(--text-primary);
+            margin-bottom: 1.5rem;
+            padding-bottom: 0.75rem;
+            border-bottom: 2px solid var(--border-color);
+        }
+
+        .info-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 1.5rem;
+        }
+
+        .info-card {
+            padding: 1.25rem;
+            background: var(--bg-secondary);
+            border-radius: var(--radius-md);
+        }
+
+        .info-card-label {
+            font-size: 0.85rem;
+            color: var(--text-secondary);
+            margin-bottom: 0.5rem;
+            font-weight: 600;
+        }
+
+        .info-card-value {
+            font-size: 1.1rem;
+            color: var(--text-primary);
+            font-weight: 500;
+        }
+
+        .facilities-list {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 1rem;
+        }
+
+        .facility-item {
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+            padding: 0.75rem;
+            background: var(--bg-secondary);
+            border-radius: var(--radius-md);
+        }
+
+        .facility-icon {
+            font-size: 1.25rem;
+        }
+
+        .tags-list {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 0.75rem;
+        }
+
+        .tag-large {
+            padding: 0.5rem 1rem;
+            background: var(--bg-secondary);
+            border-radius: var(--radius-md);
+            font-size: 0.95rem;
+            color: var(--text-primary);
+            font-weight: 500;
+        }
+
+        .action-buttons {
+            display: flex;
+            gap: 1rem;
+            margin-top: 2rem;
+            flex-wrap: wrap;
+        }
+
+        .btn-large {
+            flex: 1;
+            min-width: 200px;
+            padding: 1.25rem 2rem;
+            font-size: 1.1rem;
+        }
+
+        .not-found {
+            text-align: center;
+            padding: 4rem 2rem;
+        }
+
+        .not-found h2 {
+            font-size: 2rem;
+            margin-bottom: 1rem;
+            color: var(--text-primary);
+        }
+
+        .not-found p {
+            font-size: 1.1rem;
+            color: var(--text-secondary);
+            margin-bottom: 2rem;
+        }
+
+        @media (max-width: 768px) {
+            .course-title {
+                font-size: 2rem;
+            }
+
+            .course-hero-content {
+                padding: 1.5rem;
+            }
+
+            .course-meta {
+                gap: 1rem;
+            }
+
+            .meta-value {
+                font-size: 1.1rem;
+            }
+
+            .action-buttons {
+                flex-direction: column;
+            }
+
+            .btn-large {
+                width: 100%;
+            }
+        }
+    </style>
+</head>
+<body>
+    <header class="header">
+        <div class="container">
+            <h1 class="logo">ジュニアゴルフ場ポータル</h1>
+            <p class="subtitle">関東エリアのジュニア料金対応ゴルフ場を探す</p>
+        </div>
+    </header>
+
+    <main class="main">
+        <div class="container">
+            <div class="course-detail" id="courseDetail">
+                <!-- コンテンツがここに動的に挿入されます -->
+            </div>
+        </div>
+    </main>
+
+    <footer class="footer">
+        <div class="container">
+            <p>&copy; 2024 ジュニアゴルフ場ポータル. All rights reserved.</p>
+        </div>
+    </footer>
+
+    <script src="golf-courses.js"></script>
+    <script>
+        // URLパラメータからIDを取得
+        const urlParams = new URLSearchParams(window.location.search);
+        const courseId = parseInt(urlParams.get('id'));
+
+        // ゴルフ場データを取得
+        const course = golfCourses.find(c => c.id === courseId);
+        const courseDetail = document.getElementById('courseDetail');
+
+        if (!course) {
+            courseDetail.innerHTML = `
+                <div class="not-found">
+                    <h2>ゴルフ場が見つかりませんでした</h2>
+                    <p>指定されたゴルフ場の情報を取得できませんでした。</p>
+                    <a href="index.html" class="btn btn-primary">トップページに戻る</a>
+                </div>
+            `;
+        } else {
+            const stars = '★'.repeat(Math.floor(course.rating)) + '☆'.repeat(5 - Math.floor(course.rating));
+            
+            courseDetail.innerHTML = `
+                <a href="index.html" class="back-link">
+                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <path d="M19 12H5M12 19l-7-7 7-7"/>
+                    </svg>
+                    一覧に戻る
+                </a>
+
+                <div class="course-hero">
+                    <img src="${course.image}" alt="${course.name}" class="course-hero-image" onerror="this.style.display='none'">
+                    <div class="course-hero-content">
+                        <h1 class="course-title">${course.name}</h1>
+                        <div class="course-meta">
+                            <div class="meta-item">
+                                <span class="meta-label">所在地</span>
+                                <span class="meta-value">${course.prefecture} ${course.city}</span>
+                            </div>
+                            <div class="meta-item">
+                                <span class="meta-label">ジュニア料金</span>
+                                <span class="meta-value">${course.juniorPrice}</span>
+                            </div>
+                            <div class="meta-item">
+                                <span class="meta-label">通常料金</span>
+                                <span class="meta-value">${course.regularPrice}</span>
+                            </div>
+                            <div class="meta-item">
+                                <span class="meta-label">評価</span>
+                                <span class="meta-value">
+                                    <span class="stars">${stars}</span> ${course.rating}
+                                </span>
+                            </div>
+                        </div>
+                        <p class="course-description-full">${course.description}</p>
+                    </div>
+                </div>
+
+                <div class="course-sections">
+                    <div class="section">
+                        <h2 class="section-title">基本情報</h2>
+                        <div class="info-grid">
+                            <div class="info-card">
+                                <div class="info-card-label">住所</div>
+                                <div class="info-card-value">${course.address}</div>
+                            </div>
+                            <div class="info-card">
+                                <div class="info-card-label">電話番号</div>
+                                <div class="info-card-value">${course.phone}</div>
+                            </div>
+                            <div class="info-card">
+                                <div class="info-card-label">コースタイプ</div>
+                                <div class="info-card-value">${course.courseType}</div>
+                            </div>
+                            <div class="info-card">
+                                <div class="info-card-label">ホール数</div>
+                                <div class="info-card-value">${course.holes}ホール</div>
+                            </div>
+                            <div class="info-card">
+                                <div class="info-card-label">パー</div>
+                                <div class="info-card-value">${course.par}</div>
+                            </div>
+                            <div class="info-card">
+                                <div class="info-card-label">ヤーデージ</div>
+                                <div class="info-card-value">${course.yardage}</div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="section">
+                        <h2 class="section-title">施設・設備</h2>
+                        <div class="facilities-list">
+                            ${course.facilities.map(facility => `
+                                <div class="facility-item">
+                                    <span class="facility-icon">✓</span>
+                                    <span>${facility}</span>
+                                </div>
+                            `).join('')}
+                        </div>
+                    </div>
+
+                    <div class="section">
+                        <h2 class="section-title">タグ</h2>
+                        <div class="tags-list">
+                            ${course.tags.map(tag => `<span class="tag-large">${tag}</span>`).join('')}
+                        </div>
+                    </div>
+                </div>
+
+                <div class="action-buttons">
+                    <a href="${course.website}" target="_blank" rel="noopener noreferrer" class="btn btn-primary btn-large">
+                        公式サイトを見る
+                    </a>
+                    <a href="${course.rakutenLink}" target="_blank" rel="noopener noreferrer" class="btn btn-secondary btn-large">
+                        楽天ゴルフで予約
+                    </a>
+                </div>
+            `;
+        }
+    </script>
+</body>
+</html>
+
