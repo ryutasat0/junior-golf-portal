@@ -10,7 +10,7 @@
     <header class="header">
         <div class="container">
             <h1 class="logo">ジュニアゴルフ場ネット</h1>
-            <p class="subtitle">関東エリアのジュニア料金対応ゴルフ場を探す</p>
+            <p class="subtitle">全国のジュニア料金対応ゴルフ場を探す</p>
         </div>
     </header>
 
@@ -30,16 +30,24 @@
 
                 <div class="filter-row">
                     <div class="filter-group">
+                        <label for="regionFilter" class="filter-label">地域</label>
+                        <select id="regionFilter" class="filter-select">
+                            <option value="すべて">すべて</option>
+                            <option value="北海道">北海道</option>
+                            <option value="東北">東北</option>
+                            <option value="関東">関東</option>
+                            <option value="中部">中部</option>
+                            <option value="関西">関西</option>
+                            <option value="中国">中国</option>
+                            <option value="四国">四国</option>
+                            <option value="九州">九州</option>
+                        </select>
+                    </div>
+
+                    <div class="filter-group">
                         <label for="prefectureFilter" class="filter-label">都道府県</label>
                         <select id="prefectureFilter" class="filter-select">
-                            <option value="すべて">すべて</option>
-                            <option value="東京都">東京都</option>
-                            <option value="神奈川県">神奈川県</option>
-                            <option value="埼玉県">埼玉県</option>
-                            <option value="千葉県">千葉県</option>
-                            <option value="茨城県">茨城県</option>
-                            <option value="栃木県">栃木県</option>
-                            <option value="群馬県">群馬県</option>
+                            <!-- 都道府県オプションはJavaScriptで動的に生成 -->
                         </select>
                     </div>
 
@@ -51,6 +59,7 @@
                             <option value="price-high">ジュニア料金：高い順</option>
                             <option value="rating">評価順</option>
                             <option value="prefecture">都道府県順</option>
+                            <option value="region">地域順</option>
                         </select>
                     </div>
 
